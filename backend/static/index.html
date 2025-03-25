@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>活动管理测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>活动管理测试</h1>
+
+    <!-- 活动发布表单 -->
+    <form id="event-form" enctype="multipart/form-data">
+        <h2>发布活动</h2>
+
+        <label for="event-title">活动标题</label>
+        <input type="text" id="event-title" required>
+
+        <label for="event-content">活动内容</label>
+        <textarea id="event-content" rows="5" required></textarea>
+
+        <label for="event-poster">活动海报</label>
+        <input type="file" id="event-poster" accept="image/*" required>
+
+        <button type="submit">发布活动</button>
+    </form>
+
+    <!-- 报名表单 -->
+    <form id="signup-form">
+        <h2>报名活动</h2>
+        <label for="event-id">活动 ID</label>
+        <input type="text" id="event-id" required>
+
+        <label for="username">姓名</label>
+        <input type="text" id="username" required>
+
+        <label for="email">邮箱</label>
+        <input type="email" id="email" required>
+
+        <button type="submit">提交报名</button>
+    </form>
+
+    <!-- 活动状态 -->
+    <div class="status">
+        <h2>活动状态</h2>
+        <p>当前活动人数: <span id="current-attendees">-</span></p>
+        <p>最大活动人数: <span id="max-attendees">-</span></p>
+        <button id="check-status">刷新状态</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
+
+
+
+        // 发布活动
+        document.getElementById('event-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('event-title').value);
+            formData.append('content', document.getElementById('event-content').value);
+            formData.append('poster', document.getElementById('event-poster').files[0]);
+            formData.append('max_attendees', 100); // 默认 100 人
+
+            try {
+                const res = await axios.post('/ActivityManager/events/', formData, {
+                    headers: {
+                        'X-CSRFToken': csrftoken,  // 添加 CSRF Token
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                alert(`活动发布成功！活动 ID: ${res.data.id}`);
+            } catch (error) {
+                 alert('活动发布失败: ' + (error.response?.data?.message || error.message || '未知错误'));
+            }
+        });
+
+        // 提交报名
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const eventId = document.getElementById('event-id').value;
+            const data = {
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value
+            };
+
+            try {
+                const res = await axios.post(`/ActivityManager/events/${eventId}/signup/`, data, {
+                    headers: {
+                        'X-CSRFToken': csrftoken,  // 添加 CSRF Token
+                    }
+                });
+                alert('报名成功！');
+            } catch (error) {
+                alert('报名失败: ' + error.response?.data?.message || error.message);
+            }
+        });
+
+        // 检查活动状态
+        document.getElementById('check-status').addEventListener('click', async () => {
+            const eventId = document.getElementById('event-id').value;
+
+            try {
+                const res = await axios.get(`/ActivityManager/events/${eventId}/`);
+                document.getElementById('current-attendees').textContent = res.data.current_attendees;
+                document.getElementById('max-attendees').textContent = res.data.max_attendees;
+            } catch (error) {
+                alert('获取活动状态失败: ' + error.response?.data?.message || error.message);
+            }
+        });
+    </script>
+</body>
+</html>
