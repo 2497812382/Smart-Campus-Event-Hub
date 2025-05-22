@@ -26,7 +26,7 @@ urlpatterns = [
 ]
 
 websocket_urlpatterns = [
-    path('ws/', include('SigninManager.routing')),
+    path('ws/SigninManager/', include('SigninManager.routing')),
 ]
 
 if settings.DEBUG:

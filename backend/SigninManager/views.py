@@ -10,13 +10,49 @@ import hmac
 from geopy.distance import geodesic
 from datetime import timedelta  # 添加timedelta导入
 from django.conf import settings  # 添加settings导入
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import permissions
+import  os
 
+class CreateEventAPI(APIView):
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        required_fields = ['name', 'gps_lat', 'gps_lng', 'valid_radius', 'start_time']
+        if not all(field in request.data for field in required_fields):
+            return Response({"error": "缺少必填字段"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            duration_minutes = int(request.data['duration_minutes'])
+            start_time = timezone.make_aware(
+                timezone.datetime.fromisoformat(request.data['start_time'])
+            )
+            end_time = start_time + timedelta(minutes=duration_minutes)
+            event = SignEvent.objects.create(
+                title=request.data['name'],
+                gps_lat=float(request.data['gps_lat']),
+                gps_lng=float(request.data['gps_lng']),
+                valid_radius=int(request.data['valid_radius']),
+                start_time=timezone.make_aware(
+                    timezone.datetime.fromisoformat(request.data['start_time'])
+                ),
+                end_time = end_time,
+                organizer=request.user
+            )
+            return Response({"id": event.id}, status=status.HTTP_201_CREATED)
+
+        except ValueError as e:
+            return Response({"error": f"参数格式错误: {str(e)}"}, status=400)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class GenerateQRCodeAPI(APIView):
     '''
     生成二维码用的, 需要event id
     '''
     def post(self, request, event_id):
+
         event = SignEvent.objects.get(id=event_id)
         secret_key = settings.SECRET_KEY
 
@@ -36,6 +72,8 @@ class GenerateQRCodeAPI(APIView):
             border=4,
         )
         qr.add_data(f"{event_id}|{timestamp}|{signature}")
+        qr_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
+        os.makedirs(qr_dir, exist_ok=True)  # 自动创建目录
         img = qr.make_image(fill_color="black", back_color="white")
 
         # 保存令牌记录

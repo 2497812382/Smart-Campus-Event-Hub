@@ -6,12 +6,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse
+from rest_framework import permissions
 
 
 
 class EventCreateView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]
 
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         title = request.data.get('title')
         content = request.data.get('content')
@@ -27,8 +29,9 @@ class EventCreateView(APIView):
         return Response({'id': event.id}, status=201)
 
 class SignupView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]
 
+    permission_classes = [IsAuthenticated]
     def post(self, request, event_id):
         try:
             event = Event.objects.get(id=event_id)
@@ -48,6 +51,7 @@ class SignupView(APIView):
 
 class WaitlistView(APIView):
     permission_classes = [IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]
 
     def post(self, request, event_id):
         try:

@@ -54,6 +54,22 @@
         </div>
         <div id="checkinResult" style="margin-top: 10px;"></div>
     </div>
+    <!-- 新增的创建事件模块 -->
+    <div class="section">
+        <h2>创建签到事件</h2>
+        <div>
+            <input type="text" id="eventName" placeholder="事件名称" style="width: 200px;">
+            <input type="number" id="eventLat" step="0.000001" placeholder="纬度" value="31.2304">
+            <input type="number" id="eventLng" step="0.000001" placeholder="经度" value="121.4737">
+            <input type="number" id="eventRadius" placeholder="有效半径（米）" min="1" value="100">
+            <input type="datetime-local" id="eventTime">
+            <input type = "number" id = "duration"placeholder="持续时间(分钟)" value="10">
+            <button onclick="createSignEvent()">创建事件</button>
+        </div>
+        <div id="eventResult" style="margin-top: 10px; color: green;"></div>
+    </div>
+
+
 
     <!-- 实时统计展示 -->
     <div class="section">
@@ -75,6 +91,23 @@
     </div>
 
     <script>
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        const csrftoken = getCookie('csrftoken');
         // WebSocket连接管理
         let socket = null;
         const eventId = 1; // 测试用活动ID
@@ -83,7 +116,7 @@
         function connectWebSocket() {
             if (socket) socket.close();
 
-            socket = new WebSocket(`ws://${location.host}/ws/stats/${eventId}/`);
+            new WebSocket(`ws://${location.host}/ws/SigninManager/stats/${eventId}/`)
 
             socket.onopen = () => {
                 document.getElementById('wsStatus').innerHTML = '✅ 已连接';
@@ -107,12 +140,51 @@
                 data.valid_percent ? `${data.valid_percent}%` : 'N/A';
         }
 
+        // 新增的创建事件函数
+        async function createSignEvent() {
+        const eventData = {
+            name: document.getElementById('eventName').value,
+            gps_lat: parseFloat(document.getElementById('eventLat').value),
+            gps_lng: parseFloat(document.getElementById('eventLng').value),
+            valid_radius: parseInt(document.getElementById('eventRadius').value),
+            start_time: document.getElementById('eventTime').value,
+            duration_minutes: parseInt(document.getElementById('duration').value)
+        };
+
+        try {
+            const response = await fetch('/SigninManager/events/create/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer test_token'
+                },
+                body: JSON.stringify(eventData)
+            });
+
+            const result = await response.json();
+            document.getElementById('eventResult').innerHTML =
+                `✅ 事件创建成功 (ID: ${result.id})`;
+
+            // 清空表单
+            document.getElementById('eventName').value = '';
+            document.getElementById('eventRadius').value = '100';
+            document.getElementById('eventTime').value = '';
+
+        } catch (error) {
+            document.getElementById('eventResult').style.color = 'red';
+            document.getElementById('eventResult').innerHTML =
+                '❌ 事件创建失败: ' + error.message;
+        }
+    }
+
         // 生成二维码
         async function generateQRCode() {
             try {
-                const response = await fetch(`SigninManager/${eventId}/generate-qr/`, {
+                const response = await fetch(`/SigninManager/${eventId}/generate-qr/`, {
                     method: 'POST',
                     headers: {
+                        'X-CSRFToken': csrftoken,
                         'Content-Type': 'application/json',
                         // 测试用认证头，实际应使用正式登录系统
                         'Authorization': 'Bearer test_token'
@@ -146,6 +218,7 @@
                 const response = await fetch('/api/checkin/', {
                     method: 'POST',
                     headers: {
+                        'X-CSRFToken': csrftoken,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
