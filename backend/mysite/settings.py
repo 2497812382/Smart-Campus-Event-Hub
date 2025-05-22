@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'ActivityManager',
+    'sslserver',
     'SigninManager',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -141,19 +142,49 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
+# settings.py
+# 开发环境配置
+DOMAIN = 'https://192.168.54.20:8000'  # 或你的局域网IP如 'http://192.168.1.100:8000'
+
+# 生产环境需要改为实际域名
+# DOMAIN = 'https://yourdomain.com'
+# 开发环境配置（允许所有IP）
+ALLOWED_HOSTS = ['*']
+
+# 生产环境应严格指定域名
+# ALLOWED_HOSTS = ['yourdomain.com']
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000",  # 允许的域名
+    "http://127.0.0.1:8000",
+    "http://192.168.54.20:8000"
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # 必须包含以下两个处理器
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+
+                # 其他可选处理器
+                'django.template.context_processors.request',
+                'django.template.context_processors.static',
+            ],
+        },
+    },
+]
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",  # 允许的域名
-    "http://127.0.0.1:8000",
-]
 
 ASGI_APPLICATION = 'config.asgi.application'
 CHANNEL_LAYERS = {

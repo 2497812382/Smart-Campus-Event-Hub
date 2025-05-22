@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Check-In System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* 新增交互按钮样式 */
+        .permission-prompt {
+            text-align: center;
+            padding: 20px;
+        }
+        .permission-btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .loader { /* 保持原有加载动画样式 */ }
+        @keyframes spin { /* 保持原有动画 */ }
+        .error-message { /* 保持原有错误样式 */ }
+    </style>
+</head>
+<body>
+    <div id="status">
+        <div class="permission-prompt">
+            <h2>Location Access Required</h2>
+            <p>Please click the button below to start check-in process</p>
+            <button class="permission-btn" onclick="initiateCheckIn()">Start Check-In</button>
+        </div>
+    </div>
+
+    <script>
+        // 初始化参数
+        let checkInParams = {};
+
+        // 页面加载时解析参数
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const requiredParams = ['event_id', 'timestamp', 'signature'];
+
+            if (!requiredParams.every(param => urlParams.has(param))) {
+                showError('Invalid QR code parameters');
+                return;
+            }
+
+            checkInParams = {
+                event_id: urlParams.get('event_id'),
+                timestamp: urlParams.get('timestamp'),
+                signature: urlParams.get('signature')
+            };
+        });
+
+        // 用户交互触发定位
+        function initiateCheckIn() {
+            updateStatus('Checking system permissions...');
+
+            // 验证是否支持地理位置
+            if (!navigator.geolocation) {
+                showError('Geolocation is not supported by your browser');
+                return;
+            }
+
+            // 先请求位置权限
+            navigator.permissions.query({ name: 'geolocation' })
+                .then(permissionStatus => {
+                    if (permissionStatus.state === 'granted') {
+                        getLocation();
+                    } else {
+                        requestLocationPermission();
+                    }
+                });
+        }
+
+        // 显式请求权限
+        function requestLocationPermission() {
+            updateStatus('Requesting location access...');
+
+            navigator.geolocation.getCurrentPosition(
+                () => getLocation(),  // 权限授予后获取位置
+                handleLocationError,  // 处理拒绝情况
+                { enableHighAccuracy: true }
+            );
+        }
+
+        // 获取位置数据
+        function getLocation() {
+            updateStatus('Detecting your location...');
+
+            navigator.geolocation.getCurrentPosition(
+                handleLocationSuccess,
+                handleLocationError,
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        // 保持原有成功处理函数
+        function handleLocationSuccess(position) { /* 同原代码 */ }
+
+        // 增强错误处理
+        function handleLocationError(error) {
+            const errorMessages = {
+                1: 'Location permission denied. Please enable in browser settings',
+                2: 'Position unavailable (check GPS signal)',
+                3: 'Request timeout (15s)'
+            };
+            showError(errorMessages[error.code] || 'Location detection failed');
+
+            // 添加详细调试信息
+            console.error('Geolocation Error:', error);
+            console.log('Permission Status:', navigator.permissions);
+        }
+
+        // 保持其他辅助函数不变
+        function updateStatus(message) { /* 同原代码 */ }
+        function showError(message) { /* 同原代码 */ }
+        function handleCheckinResult(data) { /* 同原代码 */ }
+        function handleNetworkError(error) { /* 同原代码 */ }
+    </script>
+</body>
+</html>

@@ -13,6 +13,7 @@ from django.conf import settings  # 添加settings导入
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import permissions
 import  os
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 
 class CreateEventAPI(APIView):
     # permission_classes = [IsAuthenticated]
@@ -71,7 +72,9 @@ class GenerateQRCodeAPI(APIView):
             box_size=10,
             border=4,
         )
-        qr.add_data(f"{event_id}|{timestamp}|{signature}")
+        # GenerateQRCodeAPI中修改二维码内容
+        verification_url = f"{settings.DOMAIN}/SigninManager/checkin/?event_id={event_id}&timestamp={timestamp}&signature={signature}"
+        qr.add_data(verification_url)
         qr_dir = os.path.join(settings.MEDIA_ROOT, 'qrcodes')
         os.makedirs(qr_dir, exist_ok=True)  # 自动创建目录
         img = qr.make_image(fill_color="black", back_color="white")
@@ -96,6 +99,18 @@ class CheckInAPI(APIView):
 
     验证二维码， 返回"success"或者"invalid_location"
     '''
+
+    # 为GET请求渲染HTML，POST返回JSON
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+
+    def get(self, request):
+        """扫码后的GET请求返回HTML页面"""
+        return Response(
+            template_name='checkin.html',  # HTML模板
+            content_type='text/html',  # 强制指定类型
+            status=200
+        )
+
     def post(self, request):
         user = request.user
         data = request.data
@@ -123,7 +138,12 @@ class CheckInAPI(APIView):
             token_used=token
         )
 
-        return Response({
-            "status": "success" if record.is_valid else "invalid_location",
-            "distance": round(distance, 2)
-        })
+        if record.is_valid:
+            html = "<h1>✅ 签到成功!</h1>"
+            f"<p>距离：{distance}米</p>"
+        else:
+            html = "<h1>❌ 签到失败</h1>"
+            f"<p>原因：超出有效范围（当前{distance}米）</p>"
+
+        return Response(html)
+
