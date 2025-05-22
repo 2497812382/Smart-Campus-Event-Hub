@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>签到系统测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .qr-code {
+            max-width: 200px;
+            margin: 10px 0;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>签到系统测试界面</h1>
+
+    <!-- 生成二维码区域 -->
+    <div class="section">
+        <h2>生成二维码</h2>
+        <button onclick="generateQRCode()">生成活动二维码</button>
+        <div id="qrContainer"></div>
+    </div>
+
+    <!-- 签到测试区域 -->
+    <div class="section">
+        <h2>签到测试</h2>
+        <div>
+            <input type="text" id="tokenInput" placeholder="输入二维码token" style="width: 300px;">
+            <input type="number" id="latitude" step="0.000001" placeholder="纬度" value="31.2304">
+            <input type="number" id="longitude" step="0.000001" placeholder="经度" value="121.4737">
+            <button onclick="performCheckIn()">执行签到</button>
+        </div>
+        <div id="checkinResult" style="margin-top: 10px;"></div>
+    </div>
+
+    <!-- 实时统计展示 -->
+    <div class="section">
+        <h2>实时统计 <span id="wsStatus" style="font-size: 0.8em; color: #666;"></span></h2>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">总签到</div>
+                <div class="stat-value" id="total">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">有效签到</div>
+                <div class="stat-value" id="valid">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">有效率</div>
+                <div class="stat-value" id="percent">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // WebSocket连接管理
+        let socket = null;
+        const eventId = 1; // 测试用活动ID
+
+        // 初始化WebSocket连接
+        function connectWebSocket() {
+            if (socket) socket.close();
+
+            socket = new WebSocket(`ws://${location.host}/ws/stats/${eventId}/`);
+
+            socket.onopen = () => {
+                document.getElementById('wsStatus').innerHTML = '✅ 已连接';
+            };
+
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                updateStats(data);
+            };
+
+            socket.onclose = () => {
+                document.getElementById('wsStatus').innerHTML = '❌ 连接已断开';
+            };
+        }
+
+        // 更新统计显示
+        function updateStats(data) {
+            document.getElementById('total').textContent = data.total;
+            document.getElementById('valid').textContent = data.valid;
+            document.getElementById('percent').textContent =
+                data.valid_percent ? `${data.valid_percent}%` : 'N/A';
+        }
+
+        // 生成二维码
+        async function generateQRCode() {
+            try {
+                const response = await fetch(`SigninManager/${eventId}/generate-qr/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 测试用认证头，实际应使用正式登录系统
+                        'Authorization': 'Bearer test_token'
+                    }
+                });
+
+                const data = await response.json();
+
+                const qrContainer = document.getElementById('qrContainer');
+                qrContainer.innerHTML = `
+                    <img src="${data.qr_code_url}" class="qr-code">
+                    <div>过期时间：${new Date(data.expires_at).toLocaleString()}</div>
+                `;
+
+                document.getElementById('tokenInput').value = data.token;
+
+            } catch (error) {
+                console.error('生成二维码失败:', error);
+            }
+        }
+
+        // 执行签到
+        async function performCheckIn() {
+            const data = {
+                token: document.getElementById('tokenInput').value,
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value)
+            };
+
+            try {
+                const response = await fetch('/api/checkin/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                document.getElementById('checkinResult').innerHTML = `
+                    <div style="color: ${result.status === 'success' ? 'green' : 'red'}">
+                        ${result.status === 'success' ? '✅ 签到成功' : '❌ 无效位置'}
+                        (距离：${result.distance}米)
+                    </div>
+                `;
+
+            } catch (error) {
+                console.error('签到失败:', error);
+            }
+        }
+
+        // 初始化
+        connectWebSocket();
+    </script>
+</body>
+</html>
