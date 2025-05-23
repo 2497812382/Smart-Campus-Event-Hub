@@ -26,7 +26,9 @@
 				<text class="forget">忘记了？</text>
 				<text class="link" @click="toRetrievePwd">找回密码</text>
 			</view>
-			<text v-if="!existAdmin" class="link" @click="toRegister">{{config.isAdmin ? '注册管理员账号': '注册账号'}}</text>
+			<text class="link" @click="toRegister">注册账号</text>
+
+
 		</view>
 		<!-- 悬浮登录方式组件 -->
 		<!-- #ifndef MP-TOUTIAO -->
@@ -149,8 +151,7 @@
 			/* 前往注册 */
 			toRegister() {
 				uni.navigateTo({
-					url: this.config.isAdmin ? '/uni_modules/uni-id-pages/pages/register/register-admin' :
-						'/uni_modules/uni-id-pages/pages/register/register',
+					url: '/uni_modules/uni-id-pages/pages/register/register',
 					fail(e) {
 						console.error(e);
 					}
