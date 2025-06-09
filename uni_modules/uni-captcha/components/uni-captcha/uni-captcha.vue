@@ -6,7 +6,7 @@
 				mode="widthFix"></image>
 		</view>
 		<input @blur="focusCaptchaInput = false" :focus="focusCaptchaInput" type="text" class="captcha"
-			:inputBorder="false" maxlength="4" v-model="val" placeholder="请输入验证码">
+			:inputBorder="false" maxlength="4" v-model="val" placeholder="Please enter the verification code">
 	</view>
 </template>
 

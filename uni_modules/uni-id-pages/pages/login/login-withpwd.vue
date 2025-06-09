@@ -5,28 +5,28 @@
 			<image :src="logo"></image>
 		</view>
 		<!-- 顶部文字 -->
-		<text class="title title-box">账号密码登录</text>
+		<text class="title title-box">Account password login</text>
 		<uni-forms>
 			<uni-forms-item name="username">
 				<uni-easyinput :focus="focusUsername" @blur="focusUsername = false" class="input-box"
-					:inputBorder="false" v-model="username" placeholder="请输入手机号/用户名/邮箱" />
+					:inputBorder="false" v-model="username" placeholder="Please enter your mobile phone number / username / email address." />
 			</uni-forms-item>
 			<uni-forms-item name="password">
 				<uni-easyinput :focus="focusPassword" @blur="focusPassword = false" class="input-box" clearable
-					type="password" :inputBorder="false" v-model="password" placeholder="请输入密码" />
+					type="password" :inputBorder="false" v-model="password" placeholder="lease enter your password" />
 			</uni-forms-item>
 		</uni-forms>
 		<uni-captcha v-if="needCaptcha" focus ref="captcha" scene="login-by-pwd" v-model="captcha" />
 		<!-- 带选择框的隐私政策协议组件 -->
 		<uni-id-pages-agreements scope="login" ref="agreements"></uni-id-pages-agreements>
-		<button class="uni-btn" type="primary" @click="pwdLogin">登录</button>
+		<button class="uni-btn" type="primary" @click="pwdLogin">Login</button>
 		<!-- 忘记密码 -->
 		<view class="link-box">
 			<view v-if="!config.isAdmin">
-				<text class="forget">忘记了？</text>
-				<text class="link" @click="toRetrievePwd">找回密码</text>
+				<text class="forget">forget？</text>
+				<text class="link" @click="toRetrievePwd">Retrieve Passward</text>
 			</view>
-			<text class="link" @click="toRegister">注册账号</text>
+			<text class="link" @click="toRegister">Register</text>
 
 
 		</view>
@@ -114,7 +114,7 @@
 				if (this.needCaptcha && this.captcha.length != 4) {
 					this.$refs.captcha.getImageCaptcha()
 					return uni.showToast({
-						title: '请输入验证码',
+						title: 'Please enter the verification code',
 						icon: 'none',
 						duration: 3000
 					});

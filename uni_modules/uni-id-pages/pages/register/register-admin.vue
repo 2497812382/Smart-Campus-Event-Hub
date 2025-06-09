@@ -85,7 +85,7 @@
 					/* if(this.formData.captcha.length != 4){
 						this.$refs.captcha.focusCaptchaInput = true
 						return uni.showToast({
-							title: '请输入验证码',
+							title: 'Please enter the verification code',
 							icon: 'none',
 							duration: 3000
 						});

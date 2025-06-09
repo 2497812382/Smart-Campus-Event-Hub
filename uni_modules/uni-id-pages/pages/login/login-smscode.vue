@@ -5,7 +5,7 @@
 			<image :src="logo"></image>
 		</view>
 		<!-- 顶部文字 -->
-		<text class="title">请输入验证码</text>
+		<text class="title">Please enter the verification code</text>
 		<text class="tip">先输入图形验证码，再获取短信验证码</text>
 		<uni-forms>
 			<uni-id-pages-sms-form focusCaptchaInput v-model="code" type="login-by-sms" ref="smsCode" :phone="phone">
