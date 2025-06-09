@@ -9,6 +9,7 @@
 				"navigationBarTitleText": "热门活动"
 			}
 		},
+		
 		{
 			"path": "pages/demo/newTable/table",
 			"style": {
@@ -103,6 +104,12 @@
 				"leftWindow": false,
 				"navigationBarTitleText": "免密登录页"
 			}
+		},
+		{
+		    "path": "pages/demo/apply/apply",
+		    "style": {
+		        "navigationBarTitleText": "活动报名"
+		    }
 		},
 		{
 			"path": "uni_modules/uni-id-pages/pages/register/register",
