@@ -21,6 +21,6 @@ from . import views
 
 
 urlpatterns = [
-    path('create-img/', views.create_img, name='create_img'),  # 添加这一行来创建一个新的URL模式
-    path('', views.create_img, name='create_img'),  # 添加这一行来创建一个新的URL模式
+    path('create-img/', views.create_img, name='create_img'),  # Add this line to create a new URL pattern
+    path('', views.create_img, name='create_img'),  # Add this line to create a new URL pattern
 ]
