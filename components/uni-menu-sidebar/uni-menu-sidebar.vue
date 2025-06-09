@@ -6,12 +6,14 @@
 					<view :class="item.icon"></view>
 					<text :class="{title: item.icon}">{{item.text}}</text>
 				</uni-menu-item>
+				
 			</template>
 			<uni-sub-menu v-else :index="item">
 				<template v-slot:title>
 					<view :class="item.icon"></view>
 					<text :class="{title: item.icon}">{{item.text}}</text>
 				</template>
+				
 				<uni-menu-sidebar class="item-bg"  :data="item.children" :key="item._id" />
 			</uni-sub-menu>
 		</block>
@@ -19,6 +21,7 @@
 </template>
 
 <script>
+	import ScanBottom from '../ScanBottom.vue'
 	export default {
 		name: 'uniMenuSidebar',
 		props: {

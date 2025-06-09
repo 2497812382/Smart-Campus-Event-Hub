@@ -1,15 +1,34 @@
+<template>
+  <view>
+    <router-view />
+    <ScanBottom />
+  </view>
+</template>
+
 <script>
+	import ScanBottom from './components/ScanBottom.vue'; // 如果 App.vue 和 components 同层
+ 
+	
 	import {
 		mapActions,
 		mapMutations
 	} from 'vuex'
+	
 	import config from '@/admin.config.js'
+	
 	import {
 		version
 	} from './package.json'
+	
 	import { uniAdminCacheKey } from './store/constants.js'
+	
 	import uploadFileForExtStorage from "@/js_sdk/ext-storage/uploadFileForExtStorage.js"
+	
 	export default {
+		components: {
+		    ScanBottom,
+		},
+		
 		created() {
 			this.clear = undefined
 		},

@@ -166,6 +166,18 @@
 				"enablePullDownRefresh": false,
 				"navigationBarTitleText": "设置密码"
 			}
+		},
+		{
+			"path": "pages/admin/event",
+			"style": {
+				"navigationBarTitleText": "管理活动"
+			}
+		},
+		{
+			"path": "pages/admin/check-in",
+			"style": {
+				"navigationBarTitleText": "管理签到"
+			}
 		}
 	,{
     "path": "uni_modules/uni-id-pages/pages/userinfo/realname-verify/realname-verify",
