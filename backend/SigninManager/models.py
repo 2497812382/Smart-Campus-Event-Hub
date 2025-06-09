@@ -18,15 +18,6 @@ class SignEvent(models.Model):
     # 文字描述的活动地点（如：第一教学楼101室）
     location = models.CharField(max_length=200)
 
-    # GPS纬度坐标，十进制存储（最大9位数，其中小数部分6位，例如：39.904211）
-    gps_lat = models.DecimalField(max_digits=9, decimal_places=6)
-
-    # GPS经度坐标，十进制存储（格式同纬度）
-    gps_lng = models.DecimalField(max_digits=9, decimal_places=6)
-
-    # 有效签到半径（单位：米），默认100米范围，必须为正整数
-    valid_radius = models.PositiveIntegerField(default=100)
-
 
 class AttendanceToken(models.Model):
     # 关联的外键活动，级联删除（活动删除时相关令牌自动删除）
@@ -55,11 +46,6 @@ class AttendanceRecord(models.Model):
     # 签到时间，自动记录记录创建时的时间（不可修改）
     checkin_time = models.DateTimeField(auto_now_add=True)
 
-    # 用户签到时的纬度坐标（十进制存储，格式同活动坐标）
-    checkin_lat = models.DecimalField(max_digits=9, decimal_places=6)
-
-    # 用户签到时的经度坐标（十进制存储）
-    checkin_lng = models.DecimalField(max_digits=9, decimal_places=6)
 
     # 有效性标志（布尔值），True表示在有效半径内的合法签到
     is_valid = models.BooleanField(default=False)

@@ -7,7 +7,6 @@ import qrcode
 from  qrcode.main import QRCode
 import hashlib
 import hmac
-from geopy.distance import geodesic
 from datetime import timedelta  # 添加timedelta导入
 from django.conf import settings  # 添加settings导入
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +19,7 @@ class CreateEventAPI(APIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
-        required_fields = ['name', 'gps_lat', 'gps_lng', 'valid_radius', 'start_time']
+        required_fields = ['name', 'start_time', 'duration_minutes']
         if not all(field in request.data for field in required_fields):
             return Response({"error": "缺少必填字段"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -32,9 +31,6 @@ class CreateEventAPI(APIView):
             end_time = start_time + timedelta(minutes=duration_minutes)
             event = SignEvent.objects.create(
                 title=request.data['name'],
-                gps_lat=float(request.data['gps_lat']),
-                gps_lng=float(request.data['gps_lng']),
-                valid_radius=int(request.data['valid_radius']),
                 start_time=timezone.make_aware(
                     timezone.datetime.fromisoformat(request.data['start_time'])
                 ),
@@ -83,7 +79,7 @@ class GenerateQRCodeAPI(APIView):
         token = AttendanceToken.objects.create(
             event=event,
             token=signature,
-            expires_at=timezone.now() + timedelta(minutes=5)
+            expires_at= event.end_time,
         )
         img.save(f"media/qrcodes/{token.id}.png")
 
@@ -123,27 +119,21 @@ class CheckInAPI(APIView):
         except AttendanceToken.DoesNotExist:
             return Response({"error": "无效的二维码"}, status=400)
 
-        # 验证地理位置
-        event_location = (token.event.gps_lat, token.event.gps_lng)
-        user_location = (data['latitude'], data['longitude'])
-        distance = geodesic(event_location, user_location).meters
 
         # 创建签到记录
         record = AttendanceRecord.objects.create(
             event=token.event,
             user=user,
-            checkin_lat=data['latitude'],
-            checkin_lng=data['longitude'],
-            is_valid=distance <= token.event.valid_radius,
+            is_valid=True,
             token_used=token
         )
 
         if record.is_valid:
             html = "<h1>✅ 签到成功!</h1>"
-            f"<p>距离：{distance}米</p>"
+
         else:
             html = "<h1>❌ 签到失败</h1>"
-            f"<p>原因：超出有效范围（当前{distance}米）</p>"
+
 
         return Response(html)
 
