@@ -250,7 +250,7 @@ export default {
                             query.appid = appid
                             getFieldTotal.call(this, query, `total_${type}s`).then(total => {
                                 this[`${type}TableData`].find(item => item.appid === appid)[
-                                    `${total_${type}s_value}`] = total
+                                    `total_${type}s_value`] = total
                             })
                         }
                     }
