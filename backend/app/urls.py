@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.urls import include
+from . import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-   path('', include('app.urls'))
+    path('create-img/', views.create_img, name='create_img'),  # 添加这一行来创建一个新的URL模式
+    path('', views.create_img, name='create_img'),  # 添加这一行来创建一个新的URL模式
 ]
