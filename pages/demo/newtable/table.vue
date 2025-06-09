@@ -32,8 +32,10 @@
 					<uni-td style="text-align: center; vertical-align: middle;">{{item.popularity}}</uni-td> <!-- 新增列的数据，可根据实际情况修 -->
 					<uni-td>
 						<view class="uni-group">
-							<!-- 编辑按钮 -->
+							<!-- 详情按钮 -->
 							<button class="uni-button" size="mini" type="primary">{{$t('common.button.detail')}}</button>
+							<!-- 签到按钮 -->
+							<button class="uni-button" size="mini" type="primary">{{$t('common.button.signup')}}</button>
 						</view>
 					</uni-td>
 				</uni-tr>
