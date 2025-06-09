@@ -144,7 +144,7 @@ CELERY_TIMEZONE = 'Asia/Shanghai'
 
 # settings.py
 # 开发环境配置
-DOMAIN = 'https://192.168.54.20:8000'  # 或你的局域网IP如 'http://192.168.1.100:8000'
+DOMAIN = 'http://192.168.50.75:8000'  # 或你的局域网IP如 'http://192.168.1.100:8000'
 
 # 生产环境需要改为实际域名
 # DOMAIN = 'https://yourdomain.com'

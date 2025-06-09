@@ -128,44 +128,50 @@
             const timestamp = urlParams.get('timestamp');
 
             // 签到按钮点击事件
-            checkinBtn.addEventListener('click', () => {
+            checkinBtn.addEventListener('click',async () => {
                 // 显示加载状态
                 statusDiv.innerHTML = `
                     <div class="loader"></div>
                     <p>正在处理签到请求，请稍候...</p>
                 `;
+                try{
+                        // 发送签到请求
+                        const response = await fetch('/SigninManager/checkin/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCSRFToken()  // 获取CSRF令牌
+                            },
+                            body: JSON.stringify({
+                                token: token,
+                                event_id: eventId,
+                                timestamp: timestamp
+                            })
+                        })
+                        const responseText = await response.text();
 
-                // 发送签到请求
-                fetch('/api/checkin/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCSRFToken()  // 获取CSRF令牌
-                    },
-                    body: JSON.stringify({
-                        token: token,
-                        event_id: eventId,
-                        timestamp: timestamp
-                    })
-                })
-                .then(response => {
-                    if (!response.ok) throw new Error('网络响应异常');
-                    return response.text();
-                })
-                .then(html => {
-                    // 直接显示后端返回的HTML结果
-                    statusDiv.innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('签到失败:', error);
-                    statusDiv.innerHTML = `
-                        <div class="result error">
-                            <p>签到失败: ${error.message || '网络连接问题'}</p>
-                            <button class="btn retry-btn" onclick="location.reload()">重试</button>
-                        </div>
-                    `;
+                        if (!response.ok) {
+                          throw new Error(`请求失败: ${response.status} - ${responseText}`);
+                        }
+                        const data = JSON.parse(responseText);
+                        if(data.success)
+                        {
+                            statusDiv.innerHTML = `<h1>✅ ${data.message}</h1>`;
+                        } else {
+                            statusDiv.innerHTML = `<h1>❌ ${data.message}</h1>`;
+                        }
+                        {#statusDiv.innerHTML = responseText; // 使用存储的文本#}
+                    }
+                    catch (error) {
+                        console.error('签到失败:', error);
+                        statusDiv.innerHTML = `
+                            <div class="result error">
+                                <p>${error.message}</p>
+                                <button class="btn retry-btn" onclick="location.reload()">重试</button>
+                            </div>
+                        `;
+                    }
                 });
-            });
 
             // 获取CSRF令牌的函数
             function getCSRFToken() {

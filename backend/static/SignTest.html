@@ -44,15 +44,7 @@
         <div id="qrContainer"></div>
     </div>
 
-    <!-- 签到测试区域 -->
-    <div class="section">
-        <h2>签到测试</h2>
-        <div>
-            <input type="text" id="tokenInput" placeholder="输入二维码token" style="width: 300px;">
-            <button onclick="performCheckIn()">执行签到</button>
-        </div>
-        <div id="checkinResult" style="margin-top: 10px;"></div>
-    </div>
+
     <!-- 新增的创建事件模块 -->
     <div class="section">
         <h2>创建签到事件</h2>
@@ -154,15 +146,21 @@
                 },
                 body: JSON.stringify(eventData)
             });
+            // 首先检查响应状态
+            if (!response.ok) {
+                // 尝试解析错误信息
+                const errorResponse = await response.text();
+                throw new Error(`请求失败: ${response.status} - ${errorResponse}`);
+            }
 
             const result = await response.json();
+            console.log("后端返回的完整数据:", result);
             eventId = result.id;
             document.getElementById('eventResult').innerHTML =
                 `✅ 签到事件创建成功 (ID: ${result.id})`;
 
             // 清空表单
             document.getElementById('eventName').value = '';
-            document.getElementById('eventRadius').value = '100';
             document.getElementById('eventTime').value = '';
 
         } catch (error) {
@@ -204,36 +202,6 @@
         }
 
         // 执行签到
-        async function performCheckIn() {
-            const data = {
-                token: document.getElementById('tokenInput').value,
-                latitude: parseFloat(document.getElementById('latitude').value),
-                longitude: parseFloat(document.getElementById('longitude').value)
-            };
-
-            try {
-                const response = await fetch('/api/checkin/', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRFToken': csrftoken,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                const result = await response.json();
-
-                document.getElementById('checkinResult').innerHTML = `
-                    <div style="color: ${result.status === 'success' ? 'green' : 'red'}">
-                        ${result.status === 'success' ? '✅ 签到成功' : '❌ 无效位置'}
-                        (距离：${result.distance}米)
-                    </div>
-                `;
-
-            } catch (error) {
-                console.error('签到失败:', error);
-            }
-        }
 
         // 初始化
         connectWebSocket();

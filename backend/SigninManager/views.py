@@ -97,7 +97,12 @@ class CheckInAPI(APIView):
     '''
 
     # 为GET请求渲染HTML，POST返回JSON
-    renderer_classes = [TemplateHTMLRenderer, JSONRenderer]
+    def get_renderers(self):
+        # GET请求使用模板渲染器
+        if self.request.method == 'GET':
+            return [TemplateHTMLRenderer()]
+        # 其他请求使用JSON渲染器
+        return [JSONRenderer()]
 
     def get(self, request):
         """扫码后的GET请求返回HTML页面"""
@@ -128,12 +133,11 @@ class CheckInAPI(APIView):
             token_used=token
         )
 
-        if record.is_valid:
-            html = "<h1>✅ 签到成功!</h1>"
 
-        else:
-            html = "<h1>❌ 签到失败</h1>"
-
-
-        return Response(html)
+        return Response({
+            "success": record.is_valid,
+            "message": "签到成功" if record.is_valid else "签到失败",
+            "event_id": token.event.id,
+            "user_id": request.user.id
+        }, status=status.HTTP_200_OK)
 
