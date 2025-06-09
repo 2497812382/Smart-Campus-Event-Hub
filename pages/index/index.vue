@@ -15,7 +15,7 @@
             <!-- 提示条2：添加应用 -->
             <uni-notice-bar v-if="showAddAppId" showGetMore showIcon class="mb-m pointer"
                 text="检测到您还未添加应用，点击前往应用管理添加" @click="toAddAppId" />
-            <!-- 提示条3：暂无数据，需开通统计功能 -->
+            <!-- 提示条3：暂无数据1，需开通统计功能 -->
             <uni-notice-bar v-if="!deviceTableData.length && !userTableData.length && !query.platform_id && complete"
                 showGetMore showIcon class="mb-m pointer"
                 text="暂无数据, 统计相关功能需开通 uni 统计后才能使用, 如未开通, 点击查看具体流程"
