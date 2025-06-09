@@ -15,7 +15,7 @@
 			<!-- 表格组件 -->
 			<uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange">
 				<uni-tr>
-					<!-- 表头列 -->
+					<!-- 表头列1 -->
 					<uni-th width="150" align="center">date</uni-th>
 					<uni-th width="150" align="center">classification</uni-th>
 					<uni-th align="center">name</uni-th>
