@@ -1,6 +1,6 @@
 [{
 		"menu_id": "index",
-		"name": "首页",
+		"name": "Index",
 		"icon": "uni-icons-home",
 		"url": "/",
 		"sort": 100,

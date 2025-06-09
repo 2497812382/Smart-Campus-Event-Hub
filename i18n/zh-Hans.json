@@ -99,8 +99,8 @@
 	},
 	"demo": {
 		"icons": {
-			"title": "图标",
-			"describle": "点击图标即可复制图标代码"
+			"title": "热门活动",
+			"describle": "点击了解更多"
 		},
 		"table": {
 			"title": "表格"

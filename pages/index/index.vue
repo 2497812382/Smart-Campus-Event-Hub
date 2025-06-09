@@ -26,6 +26,10 @@
                     <image :src="activity.image" mode="aspectFill"></image>
                 </swiper-item>
             </swiper>
+			<!-- 添加的文字区域 -->
+			    <view class="text-container">
+			      <text class="text-content">The Smart Campus Event Hub is an integrated platform designed to streamline and automate event management on university campuses. It aims to address common issues faced by event organizers, such as fragmented communication, inefficient registration processes, and lack of real-time tracking. The platform centralizes various event-related functions, providing a seamless experience for both organizers and participants.</text>
+			    </view>
         </view>
 
         <!-- #ifndef H5 -->
@@ -338,6 +342,25 @@ export default {
 </script>
 
 <style>
+.container {
+  /* 容器样式 */
+  padding: 20px;
+}
+
+.text-container {
+  /* 文字容器样式 */
+  background-color: #f0f0f0; /* 浅灰色背景 */
+  border-radius: 10px; /* 四个角弧线 */
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center; /* 文字居中 */
+}
+
+.text-content {
+  /* 文字样式 */
+  color: #333;
+  font-size: 14px;
+}
 .uni-stat-card-header {
     display: flex;
     justify-content: space-between;

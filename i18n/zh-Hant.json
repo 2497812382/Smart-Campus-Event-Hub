@@ -99,8 +99,8 @@
 	},
 	"demo": {
 		"icons": {
-			"title": "圖標",
-			"describle": "點擊圖標即可複製圖標代碼"
+			"title": "熱門活動",
+			"describle": "點擊瞭解更多"
 		},
 		"table": {
 			"title": "表格"

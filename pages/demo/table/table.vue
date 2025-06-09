@@ -56,6 +56,14 @@
 
 	// 导出默认模块
 	export default {
+		props: {
+		    // 新增 prop 用于接收筛选条件
+		    popularityFilter: {
+		      type: String,
+		      default: ''
+		    }
+		},
+		
 		// 数据属性
 		data() {
 			return {
@@ -72,6 +80,15 @@
 				// 加载状态
 				loading: false
 			}
+		},
+		computed: {
+		    // 计算属性，根据筛选条件过滤数据
+		    filteredTableData() {
+		      if (this.popularityFilter) {
+		        return this.tableData.filter(item => item.popularity === this.popularityFilter)
+		      }
+		      return this.tableData
+		    }
 		},
 
 		// 页面加载时的处理函数
