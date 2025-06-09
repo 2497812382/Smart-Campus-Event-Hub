@@ -10,6 +10,12 @@
 			}
 		},
 		{
+			"path": "pages/demo/newTable/table",
+			"style": {
+			    "navigationBarTitleText": " MyActivities"
+				}
+		},
+		{
 			"path": "pages/demo/table/table",
 			"style": {
 				"navigationBarTitleText": "表格"

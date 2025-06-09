@@ -12,7 +12,7 @@
 			</view>
 		</view>
 		<view class="uni-container">
-			<!-- 表格组件 -->
+			<!-- 表格组件 1-->
 			<uni-table :loading="loading" border stripe type="selection" :emptyText="$t('common.empty')" @selection-change="selectionChange">
 				<uni-tr>
 					<!-- 表头列 -->
@@ -52,10 +52,11 @@
 
 <script>
 	// 导入名为 "tableData" 的模块，路径为 './tableData.js'
-	import tableData from './tableData.js'
+	import tableData from './newtableData.js'
 
 	// 导出默认模块
 	export default {
+		name: 'NewTablePage', // 修改组件名称
 		// 数据属性
 		data() {
 			return {

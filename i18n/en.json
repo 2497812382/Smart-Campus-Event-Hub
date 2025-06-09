@@ -50,6 +50,7 @@
 			"search": "Search",
 			"add": "Add",
 			"edit": "Edit",
+			"detail": "Detail"
 			"delete": "Delete",
 			"batchDelete": "Batch Delete",
 			"exportExcel": "Export Excel",

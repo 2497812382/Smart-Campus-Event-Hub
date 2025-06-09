@@ -29,6 +29,7 @@
     </unicloud-db>
     <view class="btns">
       <button type="primary" @click="handleUpdate">修改</button>
+	  <button type="primary" @click="showEventDetail">详情</button>
       <button type="warn" class="btn-delete" @click="handleDelete">删除</button>
     </view>
   </view>
@@ -42,6 +43,7 @@
     data() {
       return {
         queryWhere: '',
+		eventDetail: null, // 用于存储活动详细信息
         loadMore: {
           contentdown: '',
           contentrefresh: '',
@@ -76,6 +78,34 @@
           }
         })
       },
+	  showEventDetail() {
+	        // 调用获取活动详情的方法
+	        this.getEventDetail();
+	      },
+	      async getEventDetail() {
+	        try {
+	          // 假设这里调用后端接口获取活动详情
+	          const res = await uniCloud.callFunction({
+	            name: 'getEventDetail', // 后端云函数名称
+	            data: {
+	              eventId: this.id // 假设这里有活动的 ID
+	            }
+	          });
+	          this.eventDetail = res.result.data;
+	          // 显示弹出窗口
+	          this.showDetailPopup();
+	        } catch (err) {
+	          uni.showModal({
+	            content: err.message || '请求服务失败',
+	            showCancel: false
+	          });
+	        }
+	      },
+	      showDetailPopup() {
+	        // 这里可以使用 uni-popup 或其他弹窗组件显示详情
+	        // 示例代码，假设使用 uni-popup
+	        this.$refs.detailPopup.open();
+	      },
       handleDelete() {
         this.$refs.udb.remove(this._id, {
           success: (res) => {

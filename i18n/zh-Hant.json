@@ -50,6 +50,7 @@
 			"search": "檢索",
 			"add": "新增",
 			"edit": "修改",
+			"detail": "詳情"
 			"delete": "刪除",
 			"batchDelete": "批量刪除",
 			"exportExcel": "導出 Excel",
