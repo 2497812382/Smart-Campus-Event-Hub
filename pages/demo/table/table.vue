@@ -33,7 +33,7 @@
 					<uni-td>
 						<view class="uni-group">
 							<!-- 编辑按钮 -->
-							<button class="uni-button" size="mini" type="primary">{{$t('common.button.detail')}}</button>
+							<button class="uni-button" size="mini" type="primary" @click="goToEventDetail(index)">{{$t('common.button.detail')}}</button>
 						</view>
 					</uni-td>
 				</uni-tr>
@@ -87,6 +87,12 @@
 			// 多选处理
 			selectedItems() {
 				return this.selectedIndexs.map(i => this.tableData[i])
+			},
+			// 跳转
+			goToEventDetail(index) {
+			    uni.navigateTo({
+			     url: `/pages/demo/eventDetail/eventDetail?index=${index}`
+			    });
 			},
 
 			// 多选事件处理函数

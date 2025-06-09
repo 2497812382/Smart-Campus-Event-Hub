@@ -22,6 +22,12 @@
 			}
 		},
 		{
+		    "path": "pages/demo/eventDetail/eventDetail",
+		    "style": {
+		        "navigationBarTitleText": "Activity Details"
+		    }
+		},
+		{
 			"path": "uni_modules/uni-id-pages/pages/login/login-withpwd",
 			"style": {
 				"topWindow": false,
