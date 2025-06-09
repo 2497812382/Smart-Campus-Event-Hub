@@ -52,6 +52,7 @@
 			"edit": "修改",
 			"detail": "详情",
 			"signup":  "签到",
+			"signin":"报名",
 			"delete": "删除",
 			"batchDelete": "批量删除",
 			"exportExcel": "导出 Excel",

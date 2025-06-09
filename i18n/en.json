@@ -52,6 +52,7 @@
 			"edit": "Edit",
 			"detail": "Detail",
 			"signup": "sign up",
+			"signin": "sign in",
 			"delete": "Delete",
 			"batchDelete": "Batch Delete",
 			"exportExcel": "Export Excel",

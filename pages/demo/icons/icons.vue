@@ -4,8 +4,7 @@
 			<view class="uni-group">
 				<!-- 显示标题 -->
 				<view class="uni-title">{{$t('demo.icons.title')}}（uni-icons）</view>
-				<!-- 显示描述 -->
-				<view class="uni-sub-title">{{$t('demo.icons.describle')}}</view>
+				
 			</view>
 		</view>
 		    <!-- 表格 -->
@@ -18,8 +17,7 @@
 		        </view>
 		        <!-- 活动名称 -->
 		        <view class="event-name">{{ item.name }}</view>
-		        <!-- 详情按钮 -->
-		        <button class="detail-button" @click="showDetail(item)">{{ $t('common.button.detail') }}</button>
+		        
 		      </view>
 		    </view>
 	</view>
@@ -81,13 +79,6 @@ export default {
   margin-right: 10px; /* 与详情按钮保持一定间距 */
 }
 
-.detail-button {
-  padding: 5px 10px;
-  background-color: #007aff;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
+
 </style>
 

@@ -10,6 +10,15 @@
     <view v-else>
       <text>暂无活动详情信息</text>
     </view>
+	<!-- 报名按钮 -->
+	<button 
+	   class="apply-button" 
+	   size="mini" 
+       type="primary" 
+	   @click="applyForEvent"
+	>
+	    {{ $t('common.button.signin') }}
+	</button>
   </view>
 </template>
 
@@ -22,7 +31,7 @@ export default {
         { label: 'Title', field: 'name', icon: 'star' },
         { label: 'Time', field: 'date', icon: 'flag' },
         { label: 'Place', field: 'location', icon: 'location' },
-        { label: 'Decription', field: 'description', icon: 'chat' },
+        { label: 'Description', field: 'description', icon: 'chat' },
         { label: 'Maxmember', field: 'capacity', icon: 'person' },
         { label: 'Enrollment Status', field: 'enrollmentStatus', icon: 'chatbubble' }
       ]
@@ -38,6 +47,13 @@ export default {
         this.eventDetail = tableData[index];
       });
     }
+  },
+  methods: {
+      applyForEvent() {
+        // 处理报名逻辑
+        console.log("用户点击了报名按钮");
+        // 这里可以添加调用接口进行报名的代码
+      }
   }
 };
 </script>
@@ -65,5 +81,23 @@ export default {
 .item-value {
   margin-left: auto;
   color: #666;
+}
+
+/* 调整按钮样式 */
+.apply-button {
+  position: fixed;
+  bottom: 30px; /* 稍微上移，避免与底部边界太近 */
+  right: 30px;  /* 稍微左移，避免与右侧边界太近 */
+  z-index: 999;
+  padding: 12px 24px; /* 增大内边距 */
+  font-size: 16px;    /* 增大字体 */
+  border-radius: 6px; /* 增大圆角 */
+}
+
+/* 兼容uni-app的按钮组件样式 */
+uni-button.primary {
+  background-color: #007aff;
+  color: #fff;
+  border: none;
 }
 </style>
