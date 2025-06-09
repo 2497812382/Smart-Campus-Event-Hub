@@ -1,30 +1,10 @@
-<!-- pages/demo/eventDetail/eventDetail.vue -->
 <template>
   <view class="container">
     <view v-if="eventDetail">
-      <view>
-        <text>活动标题: </text>
-        <text>{{ eventDetail.name }}</text>
-      </view>
-      <view>
-        <text>活动时间: </text>
-        <text>{{ eventDetail.date }}</text>
-      </view>
-      <view>
-        <text>活动地点: </text>
-        <text>{{ eventDetail.location || '暂无信息' }}</text>
-      </view>
-      <view>
-        <text>活动描述: </text>
-        <text>{{ eventDetail.description || '暂无信息' }}</text>
-      </view>
-      <view>
-        <text>人数上限: </text>
-        <text>{{ eventDetail.capacity || '暂无信息' }}</text>
-      </view>
-      <view>
-        <text>报名状态: </text>
-        <text>{{ eventDetail.enrollmentStatus || '暂无信息' }}</text>
+      <view class="detail-item" v-for="(item, index) in detailItems" :key="index">
+        <uni-icons :type="item.icon" size="20" color="#999"></uni-icons>
+        <text class="item-label">{{ item.label }}</text>
+        <text class="item-value">{{ eventDetail[item.field] || '暂无信息' }}</text>
       </view>
     </view>
     <view v-else>
@@ -37,7 +17,15 @@
 export default {
   data() {
     return {
-      eventDetail: null
+      eventDetail: null,
+      detailItems: [
+        { label: 'Title', field: 'name', icon: 'star' },
+        { label: 'Time', field: 'date', icon: 'flag' },
+        { label: 'Place', field: 'location', icon: 'location' },
+        { label: 'Decription', field: 'description', icon: 'chat' },
+        { label: 'Maxmember', field: 'capacity', icon: 'person' },
+        { label: 'Enrollment Status', field: 'enrollmentStatus', icon: 'chatbubble' }
+      ]
     };
   },
   onLoad(options) {
@@ -54,8 +42,28 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   padding: 10px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.item-label {
+  margin-left: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.item-value {
+  margin-left: auto;
+  color: #666;
 }
 </style>
