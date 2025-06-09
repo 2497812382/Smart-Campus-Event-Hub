@@ -47,7 +47,7 @@ export default {
       console.log('提交报名信息:', this.formData);
       // 提交成功后可以跳转到其他页面，例如提示页面
       uni.showToast({
-        title: '报名成功',
+        title: 'success！',
         icon: 'success',
         duration: 2000
       });

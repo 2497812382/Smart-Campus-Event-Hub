@@ -21,10 +21,10 @@ export default {
 			lang: 'en'
 		}],
 		themes: [{
-			text: '默认',
+			text: 'default',
 			value: 'default'
 		}, {
-			text: '绿柔',
+			text: 'green',
 			value: 'green'
 		}],
 		debug: {
