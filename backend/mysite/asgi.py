@@ -1,3 +1,4 @@
+
 """
 ASGI config for mysite project.
 
@@ -20,3 +21,4 @@ application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": URLRouter(urls.websocket_urlpatterns)
 })
+

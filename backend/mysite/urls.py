@@ -22,7 +22,9 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('ActivityManager/', include('ActivityManager.urls')),
-    path('SigninManager/', include('SigninManager.urls'))
+    path('SigninManager/', include('SigninManager.urls')),
+    path('admin/', admin.site.urls),
+    path('', include('app.urls'))
 ]
 
 websocket_urlpatterns = [

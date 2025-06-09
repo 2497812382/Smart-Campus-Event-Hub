@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'ActivityManager',
+    'app',
     'sslserver',
     'SigninManager',
     "django.contrib.admin",
