@@ -7,7 +7,8 @@ export default [
     "location": "Library lecture hall",
     "description": "This lecture will explore the application and impact of artificial intelligence in various fields of society.",
     "capacity": 200,
-    "enrollmentStatus": "ongoing registration"
+    "enrollmentStatus": "ongoing registration",
+	"image": "/static/1.jpeg"
   },
   {
     "date": "2025-05-10",
@@ -17,7 +18,8 @@ export default [
     "location": "Computer Lab 3B",
     "description": "An intensive training bootcamp for beginners to learn Python programming basics.",
     "capacity": 100,
-    "enrollmentStatus": "ongoing registration"
+    "enrollmentStatus": "ongoing registration",
+	"image": "/static/2.png"
   },
   {
     "date": "2025-04-15",
@@ -27,7 +29,8 @@ export default [
     "location": "Campus Garden",
     "description": "Capture the beauty of spring on campus and compete for the best photo awards.",
     "capacity": 50,
-    "enrollmentStatus": "open"
+    "enrollmentStatus": "open",
+	"image": "/static/3.jpg"
   },
   {
     "date": "2025-03-20",
@@ -37,7 +40,8 @@ export default [
     "location": "Innovation Center",
     "description": "Discover and experiment with 3D printing, electronics, and prototyping tools.",
     "capacity": 80,
-    "enrollmentStatus": "open"
+    "enrollmentStatus": "open",
+	"image": "/static/4.jpeg"
   },
   {
     "date": "2025-06-05",
@@ -47,7 +51,8 @@ export default [
     "location": "Main Lawn",
     "description": "Join us in cleaning and planting trees to promote a greener campus.",
     "capacity": 60,
-    "enrollmentStatus": "ongoing registration"
+    "enrollmentStatus": "ongoing registration",
+	"image": "/static/5.jpeg"
   },
   {
     "date": "2025-02-12",
@@ -57,7 +62,8 @@ export default [
     "location": "Room A202",
     "description": "Tips and strategies for writing and structuring your thesis effectively.",
     "capacity": 120,
-    "enrollmentStatus": "closed"
+    "enrollmentStatus": "closed",
+	"image": "/static/6.jpg"
   },
   {
     "date": "2025-01-01",
@@ -67,7 +73,8 @@ export default [
     "location": "Student Union Hall",
     "description": "Celebrate the new year with fun games, music, and social bonding.",
     "capacity": 150,
-    "enrollmentStatus": "closed"
+    "enrollmentStatus": "closed",
+	"image": "/static/7.jpeg"
   },
   {
     "date": "2024-12-08",
@@ -77,7 +84,8 @@ export default [
     "location": "Workshop Room C4",
     "description": "Learn how to craft effective presentations and boost your public speaking confidence.",
     "capacity": 40,
-    "enrollmentStatus": "ongoing registration"
+    "enrollmentStatus": "ongoing registration",
+	"image": "/static/8.jpg"
   },
   {
     "date": "2024-11-18",
@@ -87,7 +95,8 @@ export default [
     "location": "Business School Auditorium",
     "description": "Present your innovative business ideas and compete for startup funding.",
     "capacity": 100,
-    "enrollmentStatus": "open"
+    "enrollmentStatus": "open",
+	"image": "/static/9.png"
   },
   {
     "date": "2024-10-20",
@@ -97,7 +106,8 @@ export default [
     "location": "Community Service Center",
     "description": "Help local seniors learn basic smartphone and internet usage.",
     "capacity": 30,
-    "enrollmentStatus": "closed"
+    "enrollmentStatus": "closed",
+	"image": "/static/10.jpg"
   },
   {
     "date": "2025-06-25",
@@ -107,7 +117,8 @@ export default [
     "location": "Outdoor Stage Area",
     "description": "Celebrate the end of the semester with live music, food, and fun.",
     "capacity": 300,
-    "enrollmentStatus": "ongoing registration"
+    "enrollmentStatus": "ongoing registration",
+	"image": "/static/11.jpg"
   },
   {
     "date": "2025-05-06",
@@ -117,7 +128,8 @@ export default [
     "location": "Lab B1",
     "description": "Hands-on workshop for creating web animations using JavaScript.",
     "capacity": 60,
-    "enrollmentStatus": "open"
+    "enrollmentStatus": "open",
+	"image": "/static/12.jpeg"
   },
   {
     "date": "2025-04-10",
@@ -127,7 +139,8 @@ export default [
     "location": "Student Center Plaza",
     "description": "Showcase and sell your student-made products and creative ideas.",
     "capacity": 70,
-    "enrollmentStatus": "ongoing registration"
+    "enrollmentStatus": "ongoing registration",
+	"image": "/static/13.png"
   },
   {
     "date": "2025-03-05",
@@ -137,7 +150,8 @@ export default [
     "location": "Green Hall",
     "description": "An expert-led session on climate impact and global sustainability goals.",
     "capacity": 180,
-    "enrollmentStatus": "open"
+    "enrollmentStatus": "open",
+	"image": "/static/14.jpg"
   },
   {
     "date": "2025-01-15",
@@ -147,6 +161,7 @@ export default [
     "location": "Main Library",
     "description": "Volunteer to help organize and clean the library during the winter break.",
     "capacity": 25,
-    "enrollmentStatus": "closed"
+    "enrollmentStatus": "closed",
+	"image": "/static/15.jpg"
   }
 ];
